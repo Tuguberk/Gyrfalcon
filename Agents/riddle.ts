@@ -6,7 +6,7 @@ import TelegramPluginDev from "./telegramPluginDev";
 
 const telegramPlugin = new TelegramPluginDev({
     credentials: {
-        botToken: "7827135580:AAHx-55hzBeq9oklSqbWFRb22m8YTt7Eq1M",
+        botToken: process.env.BOT_TOKEN!,
     },
 });
 
@@ -27,7 +27,7 @@ const chatStates = new Map<number, {
     firstWinner?: string
 }>();
 
-const autoReplyAgent = new GameAgent("apt-5fa613cb62e96aaaccbc412b334a8117", {
+const autoReplyAgent = new GameAgent(process.env.GAME_AGENT_KEY!, {
     name: "Telegram Bot",
     goal: "Auto reply message",
     description: "This agent will auto reply to messages",
@@ -45,7 +45,7 @@ const autoReplyAgent = new GameAgent("apt-5fa613cb62e96aaaccbc412b334a8117", {
     ],
 });
 
-const riddleAgent = new GameAgent("apt-5fa613cb62e96aaaccbc412b334a8117", {
+const riddleAgent = new GameAgent(process.env.GAME_AGENT_KEY!, {
     name: "Riddle Agent",
     goal: "Handle riddle-related commands",
     description: "Replies to @generateRiddle and @answer commands in Telegram",
