@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { GameAgent } from "@virtuals-protocol/game";
 import TelegramPluginDev from "./telegramPluginDev";
 
