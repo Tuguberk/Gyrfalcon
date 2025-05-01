@@ -1,0 +1,14 @@
+services:
+  game-starter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      BOT_TOKEN: ${BOT_TOKEN}
+      GAME_AGENT_KEY: ${GAME_AGENT_KEY}
+    volumes:
+      - virtuals:/app
+    restart: always
+
+volumes:
+    virtuals:
