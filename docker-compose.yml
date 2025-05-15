@@ -1,5 +1,5 @@
 services:
-  game-starter:
+  consigliere:
     build:
       context: .
       dockerfile: Dockerfile
@@ -7,8 +7,34 @@ services:
       BOT_TOKEN: ${BOT_TOKEN}
       GAME_AGENT_KEY: ${GAME_AGENT_KEY}
     volumes:
-      - virtuals:/app
+       - virtuals:/app
     restart: always
+    depends_on:
+      - backend
+    networks:
+      - inet
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5005:5001"
+    volumes:
+      - ./backend:/app
+    restart: unless-stopped
+    networks:
+      - inet
 
 volumes:
     virtuals:
+    
+networks:
+  inet:
+    external: false

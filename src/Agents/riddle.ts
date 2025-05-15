@@ -79,7 +79,8 @@ const riddleAgent = new GameAgent(process.env.GAME_AGENT_KEY!, {
         const text = msg.text?.trim().toLowerCase();
         let chatId = msg.chat.id;
         const username = msg.from?.username || `user_${msg.from?.id}`;
-        const authorizedUserIds = [1103876795, 987654321];
+        const authorizedUserIds = [1103876795, 987654321,801820805];
+
 
         //console.log("chatid ==> ", chatId)
 
@@ -116,6 +117,7 @@ const riddleAgent = new GameAgent(process.env.GAME_AGENT_KEY!, {
 
                 const task = `Send message "🧩 ${riddle.riddle}" to chat id: ${chatId}`;
                 await agentRiddleWorker.runTask(task, { verbose: true });
+                
             }
 
             else if (text === "@ri") {

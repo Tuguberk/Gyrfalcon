@@ -15,24 +15,34 @@ class TelegramPluginDev extends TelegramPlugin {
     get generateRiddleFunction() {
         return new GameFunction({
             name: "generate_riddle",
-            description: "Generates a riddle with id, question, and answer.",
+            description: "Generates a riddle with id and question from backend.",
             args: [] as const,
             executable: async (_, logger) => {
                 try {
-                    // 🧪 MOCK API Simülasyonu
-                    const mockApiResponse = {
-                        id: 42,
-                        question: "Geceleri parlar, gündüzleri kaybolurum. Ne olduğumu tahmin et bakalım?",
-                        answer: "ay"
-                    };
+                    const connection_string = 'http://127.0.0.1:5005/generateRiddle'; // Development
+                    // const connection_string = 'http://backend:5001/generateRiddle'; // Docker
+                    const response = await fetch( connection_string, {
+                        method: "GET"
+                    });
 
+                    console.log(response);
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        logger(`Error generating riddle: ${errorData.error}, ${connection_string}`);
+                        return new ExecutableGameFunctionResponse(
+                            ExecutableGameFunctionStatus.Failed,
+                            `Error: ${errorData.error}`
+                        );
+                    }
+                    
+                    const data = await response.json();
                     const riddle = {
-                        id: mockApiResponse.id,
-                        riddle: mockApiResponse.question,
-                        answer: mockApiResponse.answer
+                        id: data.riddleId,
+                        riddle: data.question
                     };
 
-                    logger(`Generated riddle (mocked): ${riddle.riddle}`);
+                    logger(`Generated riddle (via backend): ${riddle.riddle}`);
 
                     return new ExecutableGameFunctionResponse(
                         ExecutableGameFunctionStatus.Done,
@@ -40,7 +50,6 @@ class TelegramPluginDev extends TelegramPlugin {
                     );
                 } catch (e: any) {
                     logger(`Error generating riddle: ${e.message}`);
-
                     return new ExecutableGameFunctionResponse(
                         ExecutableGameFunctionStatus.Failed,
                         "Failed to generate riddle."
