@@ -141,14 +141,18 @@ def generate_riddle():
     """
     Picks / rotates the next riddle on demand.
     Response:
-      200  { riddleId, question }
+      200  { riddleId, question, answer }
       404  { error }
     """
     chosen = select_random_riddle()
     if not chosen:
         return jsonify(error="No riddles in database"), 404
+    
+    # Bulmaca için cevabı al
+    answer_row = RiddleAnswer.query.filter_by(riddleId=chosen.id).first()
+    answer = answer_row.answer if answer_row else None
 
-    return jsonify(riddleId=chosen.id, question=chosen.question)
+    return jsonify(riddleId=chosen.id, question=chosen.question, answer=answer)
 
 
 @app.route("/check_answer", methods=["POST"])
