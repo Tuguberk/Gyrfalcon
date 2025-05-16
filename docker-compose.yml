@@ -6,6 +6,7 @@ services:
     environment:
       BOT_TOKEN: ${BOT_TOKEN}
       GAME_AGENT_KEY: ${GAME_AGENT_KEY}
+      DEFAULT_RIDDLE_CHAT_ID: ${DEFAULT_RIDDLE_CHAT_ID}
     volumes:
        - virtuals:/app
     restart: always
@@ -25,7 +26,7 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "5005:5001"
+      - "5009:5001"
     volumes:
       - ./backend:/app
     restart: unless-stopped

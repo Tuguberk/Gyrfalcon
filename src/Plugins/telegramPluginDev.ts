@@ -19,13 +19,11 @@ class TelegramPluginDev extends TelegramPlugin {
             args: [] as const,
             executable: async (_, logger) => {
                 try {
-                    const connection_string = 'http://127.0.0.1:5005/generateRiddle'; // Development
-                    // const connection_string = 'http://backend:5001/generateRiddle'; // Docker
+                    // const connection_string = 'http://127.0.0.1:5005/generateRiddle'; // Development
+                    const connection_string = 'http://backend:5001/generateRiddle'; // Docker
                     const response = await fetch( connection_string, {
                         method: "GET"
                     });
-
-                    console.log(response);
                     
                     if (!response.ok) {
                         const errorData = await response.json();
@@ -39,7 +37,8 @@ class TelegramPluginDev extends TelegramPlugin {
                     const data = await response.json();
                     const riddle = {
                         id: data.riddleId,
-                        riddle: data.question
+                        riddle: data.question,
+                        answer: data.answer
                     };
 
                     logger(`Generated riddle (via backend): ${riddle.riddle}`);
